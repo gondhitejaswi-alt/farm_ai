@@ -26,6 +26,14 @@ if ROOT not in sys.path:
 
 import streamlit as st
 
+# ── Streamlit Page Configuration (Must be first!) ──────────────
+st.set_page_config(
+    page_title="Farm AI — Smart Agriculture Assistant",
+    page_icon="🌾",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
 # Sync Streamlit Cloud secrets to os.environ for cloud deployment
 try:
     if hasattr(st, "secrets"):
@@ -65,14 +73,6 @@ except Exception as _import_err:
     st.error(f"Setup Error: {_import_err}")
     st.info("Please ensure you run from the farm_ai directory with: python -m streamlit run dashboard/streamlit_app.py")
     st.stop()
-
-# ── Streamlit Page Configuration ──────────────────────────────
-st.set_page_config(
-    page_title="Farm AI — Smart Agriculture Assistant",
-    page_icon="🌾",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
 
 # ── Session State Initialization ──────────────────────────────
 if "settings" not in st.session_state:

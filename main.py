@@ -16,6 +16,17 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
+# ── Auto-delegate to Streamlit dashboard if invoked by Streamlit ──
+try:
+    import streamlit as st
+    if st.runtime.exists():
+        import runpy
+        _app_path = os.path.join(ROOT, "dashboard", "streamlit_app.py")
+        runpy.run_path(_app_path, run_name="__main__")
+        sys.exit(0)
+except Exception:
+    pass
+
 from agents.soil_agent        import SoilAgent
 from agents.irrigation_agent  import IrrigationAgent
 from agents.pest_agent        import PestAgent

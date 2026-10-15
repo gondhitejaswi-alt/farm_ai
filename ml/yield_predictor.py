@@ -15,17 +15,16 @@ warnings.filterwarnings("ignore")
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Try importing XGBoost and LightGBM
 try:
     import xgboost as xgb
     XGB_OK = True
-except ImportError:
+except Exception:
     XGB_OK = False
 
 try:
     import lightgbm as lgb
     LGB_OK = True
-except ImportError:
+except Exception:
     LGB_OK = False
 
 MODEL_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "saved_models")

@@ -1,0 +1,2 @@
+# Drop this file into your venv/lib/pythonX.X/site-packages/ 
+# to permanently add farm_ai to sys.path

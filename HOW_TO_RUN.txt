@@ -1,0 +1,65 @@
+ Farm AI — How to Run (Step by Step)
+══════════════════════════════════════════════════════
+
+STEP 1: Open Command Prompt (CMD) or Terminal
+
+STEP 2: Go to the farm_ai folder
+  cd C:\Users\Gowtham\Downloads\farm_ai
+
+STEP 3: Install requirements (first time only)
+  py -m pip install streamlit plotly pandas requests numpy
+
+  For CNN leaf scan (optional but recommended):
+  py -m pip install tensorflow pillow
+
+STEP 4: Run the app
+  py -m streamlit run dashboard/streamlit_app.py
+
+STEP 5: Open browser at http://localhost:8501
+
+══════════════════════════════════════════════════════
+  API Keys — Already set in .env file!
+══════════════════════════════════════════════════════
+
+The .env file already has:
+  ✅ OPENWEATHER_API_KEY  → Real weather (temp, rain, humidity)
+  ✅ DATA_GOV_KEY         → Real mandi prices from govt API
+
+You will see 🟢 LIVE Data in the sidebar when APIs work.
+If you see 🟡 Demo Data, check:
+  1. Is DEMO_MODE=false in .env? (not true)
+  2. Do you have internet connection?
+  3. Is .env file inside the farm_ai/ folder (same level as agents/, dashboard/)
+
+══════════════════════════════════════════════════════
+  Files structure (important!)
+══════════════════════════════════════════════════════
+
+farm_ai/
+├── .env                    ← API keys (DO NOT share this)
+├── HOW_TO_RUN.txt          ← This file
+├── main.py
+├── requirements.txt
+├── agents/
+│   ├── soil_agent.py
+│   ├── irrigation_agent.py  ← FAO Penman-Monteith ET0 formula
+│   ├── pest_agent.py
+│   ├── yield_agent.py       ← Real ML model (Random Forest, R²=0.93)
+│   ├── fertilizer_agent.py
+│   ├── harvest_agent.py
+│   ├── market_agent.py      ← Seasonal price model, no random()
+│   ├── leaf_scan_agent.py   ← MobileNetV2 CNN (needs tensorflow)
+│   └── digital_twin_agent.py
+├── dashboard/
+│   └── streamlit_app.py     ← Main UI
+├── utils/
+│   ├── weather_api.py       ← OpenWeatherMap live API
+│   ├── mandi_api.py         ← data.gov.in live API
+│   └── helpers.py
+├── data/
+│   └── crop_data.py
+└── ml/
+    ├── yield_predictor.py
+    └── saved_models/        ← 22 state-specific ML models
+
+══════════════════════════════════════════════════════

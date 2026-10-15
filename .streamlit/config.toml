@@ -1,5 +1,4 @@
-# Farm AI — one clear LIGHT theme, so text is never white-on-white,
-# even if your computer / browser is set to dark mode.
+# Farm AI — Theme & Server Config
 [theme]
 base = "light"
 primaryColor = "#C2410C"
@@ -12,4 +11,6 @@ font = "sans serif"
 gatherUsageStats = false
 
 [server]
-headless = false
+headless = true
+enableCORS = false
+enableXsrfProtection = false

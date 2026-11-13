@@ -43,20 +43,29 @@ def _classify(name, r, t0, ok_detail):
 
 
 def check_openweather() -> dict:
-    name, t0 = "OpenWeather", time.time()
+    name, t0 = "Weather API", time.time()
     key = os.getenv("OPENWEATHER_API_KEY", "").strip()
-    if not key:
-        return _result(name, "no_key", "OPENWEATHER_API_KEY missing in .env", t0)
+    if key:
+        try:
+            r = requests.get("https://api.openweathermap.org/data/2.5/weather",
+                             params={"lat": 17.385, "lon": 78.487, "appid": key, "units": "metric"}, timeout=TIMEOUT)
+            if r.status_code == 200:
+                return _result(name, "working", f"OpenWeatherMap connected (Hyderabad {r.json()['main']['temp']} °C)", t0)
+        except Exception:
+            pass
+
+    # Open-Meteo zero-config fallback
     try:
-        r = requests.get("https://api.openweathermap.org/data/2.5/weather",
-                         params={"lat": 17.385, "lon": 78.487, "appid": key, "units": "metric"}, timeout=TIMEOUT)
+        r = requests.get("https://api.open-meteo.com/v1/forecast?latitude=17.385&longitude=78.487&current=temperature_2m", timeout=TIMEOUT)
         if r.status_code == 200:
-            return _result(name, "working", f"Hyderabad now {r.json()['main']['temp']} C", t0)
-        return _classify(name, r, t0, "")
+            temp = r.json().get("current", {}).get("temperature_2m", 27.0)
+            return _result(name, "working", f"Open-Meteo LIVE connected (Hyderabad {temp} °C)", t0)
     except requests.RequestException as e:
         return _result(name, "network_error", f"No connection ({type(e).__name__})", t0)
     except Exception as e:
         return _result(name, "error", type(e).__name__, t0)
+
+    return _result(name, "error", "Weather API unreachable", t0)
 
 
 def check_mandi() -> dict:

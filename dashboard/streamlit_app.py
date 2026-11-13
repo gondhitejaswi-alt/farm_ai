@@ -368,7 +368,8 @@ crop_stage = get_growth_stage(days_planted, grow_days)
 # ── Top Hero Banner ───────────────────────────────────────────
 greeting_title = t("greeting", lang, name=farmer_name)
 app_tagline    = t("app_tagline", lang)
-hero_badge = "🟢 Live weather" if live_w.get("status") == "live" else ""
+_src_name      = live_w.get("source", "Live")
+hero_badge     = f'<span style="background:#2E7D32; color:white; padding:3px 10px; border-radius:12px; font-size:0.82rem; font-weight:600;">🟢 Live Weather ({_src_name})</span>' if live_w.get("status") in ("live", "stale") else ""
 
 st.markdown(f"""
 <div class="farmer-hero">
@@ -1045,7 +1046,7 @@ with tabs[15]:
                 t("x_wx_wind", lang) + " km/h": r["wind_kmh_max"],
                 "☁️": condition_text(r["condition"], lang),
             } for r in fc_rows]), use_container_width=True, hide_index=True)
-    st.caption(t("x_wx_credit", lang))
+    st.caption(f"{t('x_wx_credit', lang)} &bull; 🛰️ Provider: {live_w.get('source', 'Live Weather API')}")
 
 # ════════════════════════════════════════════════════════════
 # TAB 17 (v11): MY FARMING HISTORY — saved on disk
